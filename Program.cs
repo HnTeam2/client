@@ -13,7 +13,7 @@ public class Client
         }
 
         //サーバーのIPアドレスとポート番号？
-        string ipOrHost = "172.20.10.3";//←ここ
+        string ipOrHost = "127.0.0.1";//←ここ ローカルは”127.0.0.1”
         int port = 9999;
 
         //サーバーと接続する（わからん）
@@ -29,10 +29,10 @@ public class Client
         System.Net.Sockets.NetworkStream ns = tcp.GetStream();
 
         //読み取り、書き込みのタイムアウトを”　”秒にする。
-        ns.ReadTimeout = 30000;
-        ns.WriteTimeout = 30000;
+       // ns.ReadTimeout = 30000;
+        //ns.WriteTimeout = 30000;
 
-        //サーバにデータを送信する,バイト型？
+        //サーバに　データを送信する,バイト型？
         System.Text.Encoding enc = System.Text.Encoding.UTF8;
         byte[] sendBytes = enc.GetBytes(sendMsg + '\n');
 
@@ -55,8 +55,6 @@ public class Client
             }
             //受信したデータを蓄積する
             ms.Write(resBytes, 0, resSize);
-            //まだ読み取れるデータがあるか、データの最後が\nでない時は、
-            // 受信を続けて、文字列を変換（）
         } while (ns.DataAvailable || resBytes[resSize - 1] != '\n');
         string resMsg = enc.GetString(ms.GetBuffer(), 0, (int)ms.Length);
         ms.Close();
